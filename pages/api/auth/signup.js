@@ -20,6 +20,16 @@ const handler = async (req, res) => {
       return res.status(422).json({ message: "Data is not valid" });
     }
 
+    const isUserExist = await userModel.findOne({
+      $or: [{ username }, { email }],
+    });
+
+    if (isUserExist) {
+      return res
+        .status(422)
+        .json({ message: "This user or email already exists" });
+    }
+
     await userModel.create({
       firstname,
       lastname,
