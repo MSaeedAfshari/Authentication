@@ -1,11 +1,24 @@
 import React, { useState } from "react";
 
 function Index() {
-  const [firstName, setFirstName] = useState();
-  const [lastName, setLastName] = useState();
-  const [userName, setUserName] = useState();
+  const [firstname, setFirstName] = useState();
+  const [lastname, setLastName] = useState();
+  const [username, setUserName] = useState();
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
+
+  const submitForm = async (event) => {
+    event.preventDefault();
+    const user = { firstname, lastname, username, email, password };
+    const res = await fetch("/api/auth/signup", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(user),
+    });
+    console.log(res);
+  };
 
   return (
     <div className="box">
@@ -57,7 +70,12 @@ function Index() {
           <label>Password</label>
         </div>
 
-        <input type="submit" className="register-btn" value="Sign Up" />
+        <input
+          type="submit"
+          className="register-btn"
+          value="Sign Up"
+          onClick={submitForm}
+        />
       </form>
     </div>
   );
