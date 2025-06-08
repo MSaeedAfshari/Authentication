@@ -36,13 +36,15 @@ const handler = async (req, res) => {
 
     const token = generateToken({ email });
 
+    const users = userModel.find({});
+
     await userModel.create({
       firstname,
       lastname,
       username,
       email,
       password: hashedPassword,
-      role: "USER",
+      role: users.length > 0 ? "USER" : "ADMIN",
     });
 
     return res
