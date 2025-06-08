@@ -1,5 +1,6 @@
 import connecttoDB from "@/configs/db";
 import userModel from "@/models/User";
+import { hashPassword } from "@/utils/auth";
 
 const handler = async (req, res) => {
   if (req.method !== "POST") {
@@ -30,18 +31,22 @@ const handler = async (req, res) => {
         .json({ message: "This user or email already exists" });
     }
 
+    const hashedPassword = await hashPassword(password);
+
     await userModel.create({
       firstname,
       lastname,
       username,
       email,
-      password,
+      password: hashedPassword,
       role: "USER",
     });
 
     return res.status(201).json({ message: "User got created successfully" });
   } catch (err) {
-    return res.status(500).json({ message: "Unkown internal server error" });
+    return res
+      .status(500)
+      .json({ message: "Unkown internal server error", error: err });
   }
 };
 export default handler;
