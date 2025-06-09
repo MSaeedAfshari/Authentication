@@ -7,13 +7,13 @@ const handler = async (req, res) => {
     return false;
   }
   try {
-    const { token } = context.req.cookies;
+    const { token } = req.cookies;
 
     if (!token) {
       return res.status(401).json({ message: "You are not login" });
     }
 
-    const isValidToken = await verifyToken(token);
+    const isValidToken = verifyToken(token);
 
     if (!isValidToken) {
       return res.status(401).json({ message: "You are not login" });
@@ -30,7 +30,7 @@ const handler = async (req, res) => {
 
     return res.status(200).json({ data: user });
   } catch (err) {
-    return res.status(200).json({ message: "A server error occured" });
+    return res.status(500).json({ message: "A server error occured" });
   }
 };
 export default handler;
