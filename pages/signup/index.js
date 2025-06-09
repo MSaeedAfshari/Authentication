@@ -1,6 +1,9 @@
+import { useRouter } from "next/router";
 import React, { useState } from "react";
 
 function Index() {
+  const route = useRouter();
+
   const [firstname, setFirstName] = useState();
   const [lastname, setLastName] = useState();
   const [username, setUserName] = useState();
@@ -18,6 +21,16 @@ function Index() {
       body: JSON.stringify(user),
     });
     console.log(res);
+    if (res.status === 201) {
+      setFirstName("");
+      setLastName("");
+      setUserName("");
+      setEmail("");
+      setPassword("");
+
+      alert("Registered successfully!");
+      route.replace("/dashboard");
+    }
   };
 
   return (
@@ -28,6 +41,7 @@ function Index() {
           <input
             type="text"
             autoComplete="off"
+            value={firstname}
             onChange={(e) => setFirstName(e.target.value)}
             required
           />
@@ -37,6 +51,7 @@ function Index() {
           <input
             type="text"
             autoComplete="off"
+            value={lastname}
             onChange={(e) => setLastName(e.target.value)}
             required
           />
@@ -46,6 +61,7 @@ function Index() {
           <input
             type="text"
             autoComplete="off"
+            value={username}
             onChange={(e) => setUserName(e.target.value)}
             required
           />
@@ -55,6 +71,7 @@ function Index() {
           <input
             type="email"
             autoComplete="off"
+            value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
           />
@@ -64,6 +81,7 @@ function Index() {
           <input
             type="password"
             autoComplete="off"
+            value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
           />

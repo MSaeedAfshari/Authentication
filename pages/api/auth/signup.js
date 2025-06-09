@@ -36,7 +36,7 @@ const handler = async (req, res) => {
 
     const token = generateToken({ email });
 
-    const users = userModel.find({});
+    const users = await userModel.find();
 
     await userModel.create({
       firstname,
