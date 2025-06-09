@@ -19,7 +19,6 @@ function Index() {
       },
       body: JSON.stringify(user),
     });
-    console.log(res);
     if (res.status === 200) {
       setIdentifier("");
       setPassword("");

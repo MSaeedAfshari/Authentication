@@ -20,7 +20,6 @@ function Index() {
       },
       body: JSON.stringify(user),
     });
-    console.log(res);
     if (res.status === 201) {
       setFirstName("");
       setLastName("");
