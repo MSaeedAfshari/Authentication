@@ -1,4 +1,4 @@
-import { hash } from "bcryptjs";
+import { hash, compare } from "bcryptjs";
 import { sign } from "jsonwebtoken";
 
 const hashPassword = async (password) => {
@@ -15,4 +15,9 @@ const generateToken = (data) => {
   return token;
 };
 
-export { hashPassword, generateToken };
+const verifyPassword = async (password, hashedPassword) => {
+  const isValid = await compare(password, hashedPassword);
+  return isValid;
+};
+
+export { hashPassword, generateToken, verifyPassword };
