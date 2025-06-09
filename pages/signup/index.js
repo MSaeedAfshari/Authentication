@@ -30,6 +30,8 @@ function Index() {
 
       alert("Registered successfully!");
       route.replace("/dashboard");
+    } else if (res.status === 422) {
+      alert("This user or email already exists");
     }
   };
 
