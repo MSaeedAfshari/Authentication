@@ -13,13 +13,18 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 
 function Index() {
-  const [isLoggedIn, setIsLoggedIn] = useState(null);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
     const userAuth = async () => {
       const res = await fetch("/api/auth/me");
       if (res.status === 200) {
         setIsLoggedIn(true);
+        const { data: user } = await res.json();
+        if (user.role === "ADMIN") {
+          setIsAdmin(true);
+        }
       }
     };
 
@@ -72,15 +77,19 @@ function Index() {
               </>
             )}
           </>
-          {/* User is login & admin */}
-          {/* <li>
-            <Link href="/p-admin">
-              <span>
-                <FontAwesomeIcon icon={faSolarPanel} />
-              </span>
-              Admin panel
-            </Link>
-          </li> */}
+          {isAdmin && isLoggedIn ? (
+            <>
+              <li>
+                <Link href="/p-admin">
+                  <span>
+                    <FontAwesomeIcon icon={faSolarPanel} />
+                  </span>
+                  Admin panel
+                </Link>
+              </li>
+            </>
+          ) : null}
+          {/*  */}
         </ul>
         <img className="wave" src="/Images/wave.svg" alt="wave" />
       </aside>
