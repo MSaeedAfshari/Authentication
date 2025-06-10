@@ -4,8 +4,6 @@ import { verifyToken } from "@/utils/auth";
 import React from "react";
 
 function Dashboard({ user }) {
-  console.log(user);
-
   return (
     <>
       <h1>
@@ -43,8 +41,6 @@ export async function getServerSideProps(context) {
     },
     "firstname lastname"
   );
-
-  console.log(user);
 
   return {
     props: {
