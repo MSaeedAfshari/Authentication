@@ -13,6 +13,6 @@ const handler = (req, res) => {
         maxAge: 0,
       })
     )
-    .json({ message: "Logged out successfully", token });
+    .json({ message: "Logged out successfully" });
 };
 export default handler;
