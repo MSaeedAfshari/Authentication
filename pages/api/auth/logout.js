@@ -1,2 +1,18 @@
-const handler = (req, res) => {};
+import { serialize } from "cookie";
+
+const handler = (req, res) => {
+  if (req.method !== "GET") {
+  }
+
+  return res
+    .status(200)
+    .setHeader(
+      "Set-Cookie",
+      serialize("token", "", {
+        path: "/",
+        maxAge: 0,
+      })
+    )
+    .json({ message: "Logged out successfully", token });
+};
 export default handler;

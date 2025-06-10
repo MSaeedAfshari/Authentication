@@ -42,7 +42,7 @@ const handler = async (req, res) => {
         })
       )
       .status(200)
-      .json({ message: "User got created successfully", token });
+      .json({ message: "Logged in successfully", token });
   } catch (err) {
     return res
       .status(500)
