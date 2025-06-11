@@ -2,6 +2,7 @@ import { serialize } from "cookie";
 
 const handler = (req, res) => {
   if (req.method !== "GET") {
+    return false;
   }
 
   return res
