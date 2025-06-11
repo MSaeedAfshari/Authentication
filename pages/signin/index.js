@@ -15,7 +15,6 @@ function Index() {
       password,
       redirect: false,
     });
-    console.log("res: ", res);
 
     if (res.status === 200) {
       router.replace('/dashboard')
