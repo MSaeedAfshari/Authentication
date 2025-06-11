@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
-
 import "@fortawesome/fontawesome-svg-core/styles.css";
 import { config } from "@fortawesome/fontawesome-svg-core";
 config.autoAddCss = false;
@@ -12,6 +11,7 @@ import {
   faBars,
 } from "@fortawesome/free-solid-svg-icons";
 import { useRouter } from "next/router";
+import { signOut } from "next-auth/react";
 
 function Index() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -34,14 +34,10 @@ function Index() {
     userAuth();
   });
 
-  const logOut = async (event) => {
-    const res = await fetch("/api/auth/logout");
-    const data = await res.json();
-    if (res.status === 200) {
-      setIsLoggedIn(false);
-      setIsAdmin(false);
-      router.replace("/");
-    }
+  const logOut = (event) => {
+    event.preventDefault();
+    signOut();
+    alert("Signed out successfully")
   };
 
   return (
