@@ -1,45 +1,27 @@
 import { useRouter } from "next/router";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
+import { signIn } from "next-auth/react";
 
 function Index() {
   const [identifier, setIdentifier] = useState("");
   const [password, setPassword] = useState("");
 
-  const route = useRouter();
+  const router = useRouter();
 
-  useEffect(() => {
-    fetch("/api/auth/me").then((res) => {
-      if (res.status === 200) {
-        Router.replace("/dashboard");
-      }
-    });
-  }, []);
-
-  const signIn = async (event) => {
+  const signin = async (event) => {
     event.preventDefault();
-
-    const user = { identifier, password };
-
-    const res = await fetch("/api/auth/signin", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(user),
+    const res = await signIn("credentials", {
+      identifier,
+      password,
+      redirect: false,
     });
+    console.log("res: ", res);
+
     if (res.status === 200) {
-      setIdentifier("");
-      setPassword("");
-      alert("Logged in successfully");
-      route.replace("/dashboard");
-    } else if (res.status === 404) {
-      alert("User not found");
-    } else if (res.status === 422) {
-      alert("Username or password is incorrect");
-    } else {
-      alert("An error occured please try again later");
+      router.replace('/dashboard')
     }
   };
+
   return (
     <div className="box">
       <h1 align="center">Login Form</h1>
@@ -69,7 +51,7 @@ function Index() {
           type="submit"
           className="register-btn"
           value="Sign In"
-          onClick={signIn}
+          onClick={signin}
         />
       </form>
     </div>
