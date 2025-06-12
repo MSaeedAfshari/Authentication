@@ -1,26 +1,18 @@
 import React from "react";
 import connecttoDB from "@/configs/db";
 import userModel from "@/models/User";
-import { verifyToken } from "@/utils/auth";
+import { getSession } from "next-auth/react";
 
 function PAdmin({ user }) {
   return <h1>Welcome To Admin Panel ❤️, Mr.{user.lastname}</h1>;
 }
 
-export async function getServerSideProps(context) {
-  const { token } = context.req.cookies;
+export async function getServerSideProps({ req }) {
+  const session = await getSession({ req });
 
-  if (!token) {
-    return {
-      redirect: {
-        destination: "/signin",
-      },
-    };
-  }
+  console.log(session);
 
-  const isValidToken = await verifyToken(token);
-
-  if (!isValidToken) {
+  if (!session) {
     return {
       redirect: {
         destination: "/signin",
@@ -31,7 +23,7 @@ export async function getServerSideProps(context) {
 
   const user = await userModel.findOne(
     {
-      email: isValidToken.email,
+      email: session.user.email,
     },
     "firstname lastname role"
   );

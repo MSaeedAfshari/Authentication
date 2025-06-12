@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
-
 import "@fortawesome/fontawesome-svg-core/styles.css";
 import { config } from "@fortawesome/fontawesome-svg-core";
 config.autoAddCss = false;
@@ -12,36 +11,15 @@ import {
   faBars,
 } from "@fortawesome/free-solid-svg-icons";
 import { useRouter } from "next/router";
+import { signOut, useSession } from "next-auth/react";
 
 function Index() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [isAdmin, setIsAdmin] = useState(false);
+  const { status } = useSession();
 
-  const router = useRouter();
-
-  useEffect(() => {
-    const userAuth = async () => {
-      const res = await fetch("/api/auth/me");
-      if (res.status === 200) {
-        setIsLoggedIn(true);
-        const { data: user } = await res.json();
-        if (user.role === "ADMIN") {
-          setIsAdmin(true);
-        }
-      }
-    };
-
-    userAuth();
-  });
-
-  const logOut = async (event) => {
-    const res = await fetch("/api/auth/logout");
-    const data = await res.json();
-    if (res.status === 200) {
-      setIsLoggedIn(false);
-      setIsAdmin(false);
-      router.replace("/");
-    }
+  const logOut = (event) => {
+    event.preventDefault();
+    signOut();
+    alert("Signed out successfully");
   };
 
   return (
@@ -51,7 +29,7 @@ function Index() {
 
         <ul className="sidebar-links">
           <>
-            {isLoggedIn ? (
+            {status === "authenticated" ? (
               <>
                 <li>
                   <Link href="/dashboard">
@@ -91,7 +69,7 @@ function Index() {
               </>
             )}
           </>
-          {isAdmin && isLoggedIn ? (
+          { status === "authenticated" ? (
             <>
               <li>
                 <Link href="/p-admin">
